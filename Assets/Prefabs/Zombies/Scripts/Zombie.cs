@@ -10,10 +10,11 @@ public class Zombie : MonoBehaviour
     public float damage;
     public float speed;
     public int BASELINE = 0;
+    public GameOver gameOverScreen;
 
     void Start()
     {
-        
+        gameOverScreen = GameObject.Find("LoseScreen").GetComponent<GameOver>();
     }
 
     protected void Update()
@@ -21,11 +22,5 @@ public class Zombie : MonoBehaviour
         Vector3 position = new Vector3((float)transform.position.x, (float)transform.position.y, (float)transform.position.z);                  
         position.z -= (speed * (float)Time.deltaTime);                   
         transform.position = position;
-
-        if (transform.position.z <= BASELINE)
-        {
-            Scene currentScene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(currentScene.name);
-        }
     }
 }

@@ -6,29 +6,52 @@ using TMPro;
 
 public class GameOver : MonoBehaviour
 {
-    public TextMeshProUGUI text;
+    public WinScreen winScreen;
+    public LoseScreen loseScreen;
+    
+    private bool isGameOver = false;
+    
+    // LOSE
+    public int BASELINE = 0;
+    
+    // WIN
+    public const int LEVEL_TIME = 120;
+    private float elapsedTime;
 
     public void Start()
     {
-        gameObject.SetActive(false);
+        elapsedTime = 0;
     }
 
-    public void DisplayGameOver(int timeElapsed)
+    public void Update()
     {
-        gameObject.SetActive(true);
-        text.text = "You Survived: " + timeElapsed.ToString() + " Seconds";
-        PauseGame();
+        elapsedTime += Time.deltaTime;
+
+        if (elapsedTime > LEVEL_TIME)
+        {
+            winScreen.DisplayWinScreen();
+        }
+
+        if (!isGameOver)
+        {
+            CheckEnemies();
+        }
     }
 
-    public void DisplayWinScreen()
+    public void CheckEnemies()
     {
-        gameObject.SetActive(true);
-        text.text = "YOU WIN!";
-        PauseGame();
-    }
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
-    public void PauseGame()
-    {
-        Time.timeScale = 0;
+        foreach (GameObject enemy in enemies)
+        {
+            Vector3 enemyPosition = enemy.transform.position;
+            Debug.Log(enemyPosition.z);
+
+            if (enemyPosition.z < BASELINE)
+            {
+                loseScreen.DisplayGameOver((int)elapsedTime);
+                break;
+            }
+        }
     }
 }

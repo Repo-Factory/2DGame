@@ -125,3 +125,4 @@ MonoBehaviour:
   damage: 0
   speed: 0
   BASELINE: 0
+  gameOverScreen: {fileID: 0}
